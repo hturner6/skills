@@ -10,10 +10,8 @@ const status = atom({ plugin: 'pr-reply', key: 'status' } as const, '')
 
 const USAGE = [
   'Usage:',
-  '  /pr-comments [pr]              open the comments pane (default: current branch PR)',
-  '  /pr-comments list [pr]         print review comments as text',
-  '  /pr-reply <comment-id> <text>  reply in a review thread',
-  '  /pr-reply general <text>       post a top-level PR comment',
+  '  /pr-comments [pr]       open the comments pane (default: current branch PR)',
+  '  /pr-comments list [pr]  print review comments as text',
 ].join('\n')
 
 type Raw = {
@@ -83,17 +81,28 @@ async function sendReply($: any, pr: string, id: number, text: string): Promise<
   }
 }
 
+async function sendGeneral($: any, pr: string, text: string): Promise<void> {
+  const body = text.trim()
+
+  if (!body) return
+
+  await update($, status, () => 'Posting…')
+
+  try {
+    await gh($, ['pr', 'comment', pr, '--body-file', '-'], body)
+    $.ui.toast(`Commented on PR #${pr}`)
+    await update($, status, () => '')
+  } catch (err) {
+    await update($, status, () => `Failed: ${(err as Error).message}`)
+  }
+}
+
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     await $.command.register({
       name: 'pr-comments',
       description: 'Open the PR comments pane',
       argumentHint: '[list] [pr-number]',
-    })
-    await $.command.register({
-      name: 'pr-reply',
-      description: 'Reply to a PR review comment (or "general")',
-      argumentHint: '<comment-id|general> <text>',
     })
 
     return next(e)
@@ -128,37 +137,6 @@ export const register: Register = on => {
       return { text: `PR #${pr} review comments:\n${lines.join('\n')}\n\nReply with /pr-reply <id> <text>` }
     } catch (err) {
       return { text: `pr-comments failed: ${(err as Error).message}` }
-    }
-  })
-
-  on('command.run', { command: 'pr-reply' }, async ($, e) => {
-    const m = e.args.trim().match(/^(\S+)\s+([\s\S]+)$/)
-
-    if (!m) return { text: USAGE }
-
-    const [, target, body] = m
-
-    try {
-      const pr = await prNumber($, '')
-
-      if (target === 'general') {
-        await gh($, ['pr', 'comment', pr, '--body-file', '-'], body)
-
-        return { text: `Posted comment on PR #${pr}.` }
-      }
-
-      if (!/^\d+$/.test(target)) return { text: USAGE }
-
-      const out = await gh(
-        $,
-        ['api', '-X', 'POST', `repos/{owner}/{repo}/pulls/${pr}/comments/${target}/replies`, '-F', 'body=@-'],
-        body,
-      )
-      const url = (JSON.parse(out) as { html_url?: string }).html_url
-
-      return { text: `Replied to comment ${target} on PR #${pr}${url ? `: ${url}` : '.'}` }
-    } catch (err) {
-      return { text: `pr-reply failed: ${(err as Error).message}` }
     }
   })
 
@@ -206,6 +184,13 @@ export const register: Register = on => {
         })}
         {roots.length > room && <Text dimColor>…{roots.length - room} more threads</Text>}
         {msg !== '' && <Text color="yellow">{msg}</Text>}
+        <Input
+          key="general"
+          label="Comment on PR: "
+          placeholder="top-level comment"
+          submitLabel="post"
+          onSubmit={text => sendGeneral($, pr, text)}
+        />
         <Button key="refresh" label="Refresh" onPress={() => load($, pr)} />
       </Box>
     )

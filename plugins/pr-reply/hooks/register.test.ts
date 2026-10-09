@@ -1,7 +1,7 @@
 import { expect, test } from 'claude-code/testing'
 
-test('pr-reply without a body shows usage', async $ => {
-  const r = await $.command.run({ command: 'pr-reply', args: '123' })
+test('pr-comments with a bad argument shows usage', async $ => {
+  const r = await $.command.run({ command: 'pr-comments', args: 'nonsense' })
 
   expect(r.text).toContain('Usage:')
 })
