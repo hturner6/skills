@@ -1,1 +1,9 @@
-{ "name": "pr-reply", "version": "0.1.0", "author": { "name": "Harrison Turner" }, "description": "List and reply to GitHub PR comments from inside Claude Code, via the gh CLI." }
+{
+  "name": "pr-reply",
+  "version": "0.2.0",
+  "author": {
+    "name": "Harrison Turner"
+  },
+  "description": "List and reply to GitHub PR comments from a terminal pane (or slash commands) in Claude Code, via the gh CLI.",
+  "types": "./types/index.d.ts"
+}

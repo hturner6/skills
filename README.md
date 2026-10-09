@@ -22,7 +22,7 @@ claude plugin install example-plugin@hturner-skills
 
 # once pushed to GitHub
 /plugin install example-plugin --marketplace hturner6/skills
-/plugin install pr-reply --marketplace hturner6/skills   # reply to PR comments: /pr-comments, /pr-reply
+/plugin install pr-reply --marketplace hturner6/skills   # PR comments pane: /pr-comments, /pr-reply
 ```
 
 Validate before committing: `claude plugin validate .` and `claude plugin validate plugins/<name>`.
