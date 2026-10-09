@@ -21,7 +21,7 @@ claude plugin marketplace add /home/hturner/Documents/Projects/skills
 claude plugin install example-plugin@hturner-skills
 
 # once pushed to GitHub
-/plugin install example-plugin --marketplace <owner>/<repo>
+/plugin install example-plugin --marketplace hturner6/skills
 ```
 
 Validate before committing: `claude plugin validate .` and `claude plugin validate plugins/<name>`.
