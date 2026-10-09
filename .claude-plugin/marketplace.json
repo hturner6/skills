@@ -1,0 +1,12 @@
+{
+  "name": "hturner-skills",
+  "owner": { "name": "Harrison Turner", "email": "harrison-turner@hotmail.com" },
+  "description": "Harrison's custom Claude Code plugins",
+  "plugins": [
+    {
+      "name": "example-plugin",
+      "source": "./plugins/example-plugin",
+      "description": "Placeholder plugin showing the expected layout"
+    }
+  ]
+}

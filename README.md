@@ -1,25 +1,41 @@
-# Claude Skills
+# Claude Skills & Plugins
 
-My custom [Claude Code skills](https://docs.claude.com/en/docs/claude-code/skills).
+My custom Claude Code skills and plugins. This repo is both a plugin marketplace and a home for loose personal skills.
 
 ## Layout
 
 ```
-skills/<skill-name>/SKILL.md   # one folder per skill (plus any scripts/reference files)
-template/SKILL.md              # starting point for a new skill
-install.sh                     # symlinks skills/* into ~/.claude/skills
+.claude-plugin/marketplace.json   marketplace manifest (lists plugins)
+plugins/<name>/
+  .claude-plugin/plugin.json      plugin manifest
+  skills/<skill>/SKILL.md         plus commands/, agents/, hooks/, .mcp.json as needed
+skills/<name>/SKILL.md            loose personal skills (symlinked by install.sh)
+template/SKILL.md                 starting point for a new skill
 ```
 
-## Usage
+## Plugins
+
+```sh
+# local checkout
+claude plugin marketplace add /home/hturner/Documents/Projects/skills
+claude plugin install example-plugin@hturner-skills
+
+# once pushed to GitHub
+/plugin install example-plugin --marketplace <owner>/<repo>
+```
+
+Validate before committing: `claude plugin validate .` and `claude plugin validate plugins/<name>`.
+
+### Adding a plugin
+
+1. Copy `plugins/example-plugin` to `plugins/my-plugin` and edit its `plugin.json`.
+2. Add an entry to `.claude-plugin/marketplace.json` with `"source": "./plugins/my-plugin"`.
+3. Validate, then `/reload-plugins`.
+
+## Loose skills
 
 ```sh
 ./install.sh
 ```
 
-Skills are symlinked, so edits in this repo take effect immediately.
-
-## Adding a skill
-
-1. `cp -r template skills/my-skill`
-2. Edit `skills/my-skill/SKILL.md` (set `name` to match the folder, write a clear `description`).
-3. Re-run `./install.sh`.
+Symlinks `skills/*` into `~/.claude/skills`, so edits take effect immediately. To add one: `cp -r template skills/my-skill`, edit `SKILL.md`, re-run `./install.sh`.
