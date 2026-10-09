@@ -1,0 +1,1 @@
+{ "name": "pr-reply", "version": "0.1.0", "author": { "name": "Harrison Turner" }, "description": "List and reply to GitHub PR comments from inside Claude Code, via the gh CLI." }

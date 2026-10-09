@@ -1,12 +1,20 @@
 {
   "name": "hturner-skills",
-  "owner": { "name": "Harrison Turner", "email": "harrison-turner@hotmail.com" },
+  "owner": {
+    "name": "Harrison Turner",
+    "email": "harrison-turner@hotmail.com"
+  },
   "description": "Harrison's custom Claude Code plugins",
   "plugins": [
     {
       "name": "example-plugin",
       "source": "./plugins/example-plugin",
       "description": "Placeholder plugin showing the expected layout"
+    },
+    {
+      "name": "pr-reply",
+      "source": "./plugins/pr-reply",
+      "description": "List and reply to GitHub PR comments from inside Claude Code, via the gh CLI"
     }
   ]
 }
