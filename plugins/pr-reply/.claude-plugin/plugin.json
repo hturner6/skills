@@ -1,9 +1,17 @@
 {
   "name": "pr-reply",
-  "version": "0.3.0",
+  "version": "0.9.0",
   "author": {
     "name": "Harrison Turner"
   },
   "description": "List and reply to GitHub PR comments from a terminal pane (or slash commands) in Claude Code, via the gh CLI.",
-  "types": "./types/index.d.ts"
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "resolveOnSubmit": {
+      "type": "boolean",
+      "title": "Resolve addressed threads on submit",
+      "description": "When you submit the pending review, also resolve the threads whose replies it contains. Leave off if only the reviewer resolves conversations.",
+      "default": false
+    }
+  }
 }
