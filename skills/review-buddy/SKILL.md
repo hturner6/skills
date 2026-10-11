@@ -54,31 +54,38 @@ The user approves the triage. They can move groups between tiers. **Nothing coun
 until the user says yes.** When they correct you, offer to save the correction as a rule in
 `.review-buddy.md`, and write it only if they agree.
 
-## 4. PR map
+## 4. Build the review viewer
 
-Build a single self-contained HTML page (see "Visuals") showing the flows in the PR, any new
-architecture, and a before/after sketch. Open it in the browser.
+The viewer is the main review surface: one self-contained HTML page with an overview, then the
+must-read and skim stops in flow order, each with its scoped diff, your notes on specific lines,
+and unified or side-by-side views. The reviewer marks each stop ok, concern, or question.
 
-## 5. Walk through by flow
+Write a `stops.json` (format at the top of `scripts/build-viewer.sh`) with:
+- **overview**: what the PR does and where to look, plus the skip groups the reviewer approved.
+- **stops**, in the order that makes the PR easiest to understand: a flow or feature at a time,
+  foundations before what builds on them. Never file order. Each has `why`, `lookFor`,
+  `unverified`, a concrete `visual` suggestion, and the files with the **line range** to show
+  (just the code to review, never a whole file) and any line `notes`.
 
-Order the must-read items by what makes the PR easiest to understand: a flow or feature at a time,
-foundations before what builds on them. Never file order. At each stop:
+Run `scripts/build-viewer.sh <worktree> stops.json` and open the printed `review.html` in the
+browser (`xdg-open`, `open`, or `start`). Tell the user it is ready and how many stops there are.
 
-1. Say what changed and why, in a few lines.
-2. Say what to look for: the specific judgment call that is the human's.
-3. Say what you could not verify.
-4. Show **only the code to review, as a diff**, never the whole file. Print the changed lines with
-   `scripts/show-diff.sh <worktree> <path> <start>-<end>` (lines on the PR side) and paste that
-   snippet into your message. Then open the same snippet in the editor's diff view with
-   `scripts/show-diff.sh <worktree> <path> <start>-<end> --open snippet`. If the reviewer needs to
-   navigate, find references, or see surrounding code, offer `--open file` (the whole file,
-   before vs after) or `scripts/open-editor.sh <worktree>/<path>:<line>` as a follow-up, not the default.
-5. Offer **one concrete visual**, naming exactly what you would draw, for example "I can make a
-   flow diagram of how a login request passes through the new auth middleware". Never just say
-   "I can make an HTML". Offer it every stop, and build it only if asked.
-6. Take their answer: **ok**, **concern**, or **question**. A question starts a back-and-forth.
+## 5. Walk through together
 
-Skim items get a one-line summary the user can confirm. Skipped groups are not visited.
+The user reads in the viewer and talks to you in the terminal. At each stop they ask about:
+- **Explain**: answer briefly, and paste the relevant snippet with
+  `scripts/show-diff.sh <worktree> <path> <start>-<end>` so the answer shows the code, not a link.
+- **Navigate**: they may need to follow references. Open the file with
+  `scripts/open-editor.sh <worktree>/<path>:<line>`, or the whole-file diff with
+  `scripts/show-diff.sh <worktree> <path> --open file`. Snippet-only in the editor is
+  `scripts/show-diff.sh <worktree> <path> <start>-<end> --open snippet`.
+- **Visual**: each stop carries one concrete visual suggestion naming exactly what you would draw
+  (for example "I can make a flow diagram of how a login request passes through the new auth
+  middleware"), never just "I can make an HTML". Build it only if asked.
+- **Concern**: go to step 6.
+
+When the user learns something that changes your triage or notes, update `stops.json` and rebuild.
+Skim items need only a one-line confirmation. Skipped groups are not visited.
 
 ## 6. Concerns become draft comments
 
@@ -111,5 +118,5 @@ Every claim in a visual or explanation points at a `path:line` in the worktree a
 your reading of the code. Mark anything you inferred rather than read as an inference. A visual
 the reviewer cannot trace back to the code is a risk, not a help.
 
-v1 visuals are the PR map and on-demand flow diagrams. Animations, slide decks, and interactive
+v1 visuals are the review viewer and on-demand flow diagrams. Animations, slide decks, and interactive
 components can follow if the user asks.
