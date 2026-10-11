@@ -78,9 +78,11 @@ case "$open" in
   "")
     if [[ "$mode" == html ]]; then
       echo '<pre class="diff">'
-      awk '{ gsub(/&/,"\\&amp;"); gsub(/</,"\\&lt;"); gsub(/>/,"\\&gt;")
-             c = ($0 ~ /^@@/) ? "hunk" : ($0 ~ /^\+/ && $0 !~ /^\+\+\+/) ? "add" : ($0 ~ /^-/ && $0 !~ /^---/) ? "del" : "ctx"
-             if ($0 ~ /^(diff|index|---|\+\+\+|new file)/) next
+      # Skip only the file header (before the first @@). Body lines may start with "--" or "++".
+      awk '/^@@ /{inh=1}
+           !inh{next}
+           { gsub(/&/,"\\&amp;"); gsub(/</,"\\&lt;"); gsub(/>/,"\\&gt;")
+             c = ($0 ~ /^@@/) ? "hunk" : ($0 ~ /^\+/) ? "add" : ($0 ~ /^-/) ? "del" : "ctx"
              print "<span class=\"" c "\">" $0 "</span>" }' <<<"$filtered"
       echo '</pre>'
     else

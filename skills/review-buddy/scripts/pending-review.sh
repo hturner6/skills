@@ -7,10 +7,13 @@
 # Adds to the existing pending review if there is one, else starts one.
 set -euo pipefail
 
-cmd="$1"; shift
+usage() { sed -n '2,7p' "$0" | sed 's/^# \{0,1\}//' >&2; exit 1; }
+cmd="${1:-}"; [[ -n "$cmd" ]] || usage
+shift
 
 case "$cmd" in
   add)
+    [[ $# -ge 4 ]] || usage
     pr="$1"; path="$2"; line="$3"; body="$(cat "$4")"; start="${5:-}"
     pr_id="$(gh pr view "$pr" --json id --jq .id)"
     review_id="$(gh api graphql -f query='query($p:ID!){node(id:$p){... on PullRequest{reviews(states:PENDING,first:1){nodes{id viewerDidAuthor}}}}}' -f p="$pr_id" \
@@ -25,16 +28,19 @@ case "$cmd" in
     gh api graphql "${args[@]}" --jq '.data.addPullRequestReviewThread.thread.comments.nodes[0].id'
     ;;
   list)
+    [[ $# -ge 1 ]] || usage
     pr_id="$(gh pr view "$1" --json id --jq .id)"
     gh api graphql -f query='query($p:ID!){node(id:$p){... on PullRequest{reviews(states:PENDING,first:1){nodes{viewerDidAuthor comments(first:100){nodes{id path line body}}}}}}}' -f p="$pr_id" \
       --jq '.data.node.reviews.nodes[] | select(.viewerDidAuthor) | .comments.nodes[] | "\(.id)\t\(.path):\(.line // "-")\t\(.body | gsub("\n";" ") | .[0:80])"'
     ;;
   edit)
+    [[ $# -ge 2 ]] || usage
     gh api graphql -f query='mutation($c:ID!,$b:String!){updatePullRequestReviewComment(input:{pullRequestReviewCommentId:$c,body:$b}){clientMutationId}}' \
       -f c="$1" -f b="$(cat "$2")" >/dev/null
     ;;
   delete)
+    [[ $# -ge 1 ]] || usage
     gh api graphql -f query='mutation($c:ID!){deletePullRequestReviewComment(input:{id:$c}){clientMutationId}}' -f c="$1" >/dev/null
     ;;
-  *) echo "unknown command: $cmd" >&2; exit 1 ;;
+  *) echo "unknown command: $cmd" >&2; usage ;;
 esac

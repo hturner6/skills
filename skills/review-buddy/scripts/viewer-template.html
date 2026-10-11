@@ -9,7 +9,7 @@
 :root{--tk-kw:#a626a4;--tk-str:#0b7a3b;--tk-com:#6a737d;--tk-num:#b45309;--tk-fn:#1d4ed8;--tk-ty:#0e7490;--bg:#fff;--fg:#1c1e21;--mut:#5f6368;--card:#f4f5f7;--bd:#d8dbe0;--add:#e6f6ea;--addhi:#b8e6c2;--del:#fdecea;--delhi:#f5bcb5;--hunk:#eef2fb;--must:#c0392b;--skim:#b8860b;--acc:#2563eb;--note:#fff8e1}
 @media(prefers-color-scheme:dark){:root{--tk-kw:#d19aff;--tk-str:#7ee2a0;--tk-com:#8b949e;--tk-num:#ffb86b;--tk-fn:#79b8ff;--tk-ty:#56d4dd;--bg:#16181c;--fg:#e8eaed;--mut:#9aa0a6;--card:#22252b;--bd:#363a42;--add:#1b3324;--addhi:#2a5a3a;--del:#3a2022;--delhi:#6b2f33;--hunk:#222a3a;--must:#ff7a6b;--skim:#e6b94d;--acc:#6ea0ff;--note:#3a3320}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif;display:flex;min-height:100vh}
+body{margin:0;background:var(--bg);color:var(--fg);font:15.5px/1.6 system-ui,sans-serif;display:flex;min-height:100vh}
 nav{width:270px;flex:none;border-right:1px solid var(--bd);padding:14px 10px;position:sticky;top:0;height:100vh;overflow:auto}
 nav h1{font-size:14px;margin:0 6px 10px}
 nav button{display:block;width:100%;text-align:left;background:none;border:0;border-left:3px solid transparent;color:inherit;font:inherit;font-size:13px;padding:7px 8px;cursor:pointer;border-radius:4px}
@@ -17,7 +17,7 @@ nav button:hover{background:var(--card)}nav button.cur{background:var(--card);bo
 nav .tier-must{border-left-color:var(--must)}nav .tier-skim{border-left-color:var(--skim)}
 nav .mark{float:right;font-size:12px}
 .prog{font-size:12px;color:var(--mut);margin:0 8px 10px}
-main{flex:1;min-width:0;padding:20px 24px;max-width:1200px}
+main{flex:1;min-width:0;padding:24px 32px 48px;max-width:1200px}
 h2{font-size:20px;margin:0 0 4px}.sub{color:var(--mut);font-size:13px;margin-bottom:14px}
 .badge{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;border:1px solid currentColor;margin-right:6px;vertical-align:middle}
 .badge.must{color:var(--must)}.badge.skim{color:var(--skim)}
@@ -47,7 +47,25 @@ table.diff{width:100%;border-collapse:collapse;font:12.5px/1.45 ui-monospace,SFM
 .diff tr.note td b{font-size:11px;text-transform:uppercase;color:var(--mut);margin-right:6px}
 .marks{margin:18px 0}.marks span{font-size:13px;color:var(--mut);margin-right:8px}.marks button{margin-right:6px}
 .pager{display:flex;justify-content:space-between;margin-top:22px}
-.overview{white-space:normal}
+.lead{font-size:17px;line-height:1.55;margin:8px 0 6px}
+.prose{max-width:70ch}.prose p{margin:0 0 .7em;white-space:pre-line}
+h3{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);margin:30px 0 10px;display:flex;gap:8px;align-items:center}
+.count{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:0 8px;font-size:12px;letter-spacing:0}
+.finding{border:1px solid var(--bd);border-left:4px solid var(--mut);border-radius:6px;padding:10px 14px;margin:8px 0;max-width:82ch;background:var(--card)}
+.finding.sev-high{border-left-color:var(--must)}.finding.sev-med{border-left-color:var(--skim)}
+.fh2{display:flex;gap:10px;align-items:baseline}
+.sev{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);flex:none}
+.sev-high .sev{color:var(--must)}.sev-med .sev{color:var(--skim)}
+.finding .prose{margin-top:4px;color:var(--mut);font-size:14.5px}
+a.go{display:inline-block;margin-left:8px;font-size:13px;color:var(--acc);cursor:pointer;text-decoration:none}
+a.go:hover{text-decoration:underline}
+.callout{border-left:4px solid var(--acc);background:var(--card);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;max-width:82ch}
+.callout b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--acc);margin-bottom:4px}
+.callout.dashed{border-left-style:dashed;border-left-color:var(--mut)}.callout.dashed b{color:var(--mut)}
+.list{margin:4px 0 4px 1.3em;padding:0;max-width:70ch}.list li{margin:4px 0}
+details.more{margin:14px 0;max-width:82ch;color:var(--mut);font-size:14.5px}details.more summary{cursor:pointer;margin-bottom:6px}
+nav button .num{display:inline-block;width:22px;color:var(--mut);font-size:12px}
+nav button .cnt{float:right;font-size:11px;background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:0 6px;margin-left:6px}
 @media(max-width:760px){body{display:block}nav{width:auto;height:auto;position:static;border-right:0;border-bottom:1px solid var(--bd)}main{padding:14px 16px}}
 </style>
 </head>
@@ -111,8 +129,37 @@ function codeCell(cls,text,lang){
   }catch(e){}
   td.textContent=text;return td;
 }
+var MARK={ok:'\u2713',concern:'!',question:'?'};
+var SEV={high:0,med:1,low:2},SEVLABEL={high:'High',med:'Medium',low:'Low'};
 function box(label,text,cls){var b=el('div','box '+(cls||''));b.appendChild(el('b',null,label));b.appendChild(document.createTextNode(text));return b;}
-var MARK={ok:'✓',concern:'!',question:'?'};
+// Text fields: a string becomes paragraphs (blank line = new paragraph), an array becomes a list.
+function paras(text){var d=el('div','prose');String(text).split(/\n{2,}/).forEach(function(p){d.appendChild(el('p',null,p));});return d;}
+function stopIndex(id){for(var i=1;i<views.length;i++)if(views[i].id===id)return i;return -1;}
+function stopLink(id){
+  var i=stopIndex(id);if(i<0)return document.createTextNode('');
+  var a=el('a','go','Go to stop '+i+' \u2192');a.href='#';a.onclick=function(e){e.preventDefault();go(i);};return a;
+}
+function bullets(items,ordered){
+  var u=el(ordered?'ol':'ul','list');
+  items.forEach(function(it){
+    var li=el('li');
+    if(typeof it==='string')li.textContent=it;
+    else{li.appendChild(document.createTextNode(it.text));if(it.stop)li.appendChild(stopLink(it.stop));}
+    u.appendChild(li);
+  });
+  return u;
+}
+function textOrList(v){return Array.isArray(v)?bullets(v):paras(v);}
+function section(title,count){var h=el('h3',null,title);if(count!=null)h.appendChild(el('span','count',String(count)));return h;}
+function findingCard(f){
+  var sev=SEV[f.severity]==null?'low':f.severity;
+  var c=el('div','finding sev-'+sev),head=el('div','fh2');
+  head.appendChild(el('span','sev',SEVLABEL[sev]));head.appendChild(el('strong',null,f.title));c.appendChild(head);
+  if(f.detail)c.appendChild(paras(f.detail));
+  if(f.stop)c.appendChild(stopLink(f.stop));
+  return c;
+}
+function findingsFor(id){return (DATA.findings||[]).filter(function(f){return f.stop===id;});}
 
 function renderNav(){
   var nav=document.getElementById('nav');nav.textContent='';
@@ -120,8 +167,12 @@ function renderNav(){
   var done=stops.filter(function(s){return marks[s.id];}).length;
   nav.appendChild(el('div','prog',done+' of '+stops.length+' stops marked'));
   views.forEach(function(v,i){
-    var b=el('button',(i===cur?'cur ':'')+(v.tier?'tier-'+v.tier:''),v.title);
-    if(marks[v.id]){var m=el('span','mark',MARK[marks[v.id]]);b.insertBefore(m,b.firstChild);}
+    var b=el('button',(i===cur?'cur ':'')+(v.tier?'tier-'+v.tier:''));
+    if(i>0)b.appendChild(el('span','num',String(i)));
+    if(marks[v.id]){b.appendChild(el('span','mark',MARK[marks[v.id]]));}
+    var n=i===0?(DATA.findings||[]).length:findingsFor(v.id).length;
+    if(n)b.appendChild(el('span','cnt',n+(n===1?' finding':' findings')));
+    b.appendChild(document.createTextNode(v.title));
     b.onclick=function(){go(i);};nav.appendChild(b);
   });
 }
@@ -187,32 +238,42 @@ function renderFile(f){
   d.appendChild(hunks.length?(mode==='unified'?unified(hunks,f.notes,langOf(f.path)):sideBySide(hunks,f.notes,langOf(f.path))):el('div','box','No diff for this range.'));
   return d;
 }
+function renderOverview(m){
+  var must=stops.filter(function(s){return s.tier==='must';}).length;
+  m.appendChild(el('h2',null,DATA.title||'Review'));
+  m.appendChild(el('div','sub',stops.length+' stops ('+must+' must-read) \u00b7 the AI\u2019s reading of the PR, not verified fact'));
+  if(DATA.summary){var l=paras(DATA.summary);l.className+=' lead';m.appendChild(l);}
+  var fs=(DATA.findings||[]).slice().sort(function(a,b){return (SEV[a.severity]==null?2:SEV[a.severity])-(SEV[b.severity]==null?2:SEV[b.severity]);});
+  if(fs.length){m.appendChild(section('Findings',fs.length));fs.forEach(function(f){m.appendChild(findingCard(f));});}
+  if(DATA.lookAt&&DATA.lookAt.length){m.appendChild(section('Where to look first'));m.appendChild(bullets(DATA.lookAt,true));}
+  if(DATA.ci){m.appendChild(section('CI and testing'));m.appendChild(textOrList(DATA.ci));}
+  if(Array.isArray(DATA.overview))DATA.overview.forEach(function(o){m.appendChild(section(o.title));m.appendChild(textOrList(o.body));});
+  if(DATA.skipped&&DATA.skipped.length){
+    var d=el('details','more');d.appendChild(el('summary',null,'Approved to skip ('+DATA.skipped.length+')'));d.appendChild(bullets(DATA.skipped));m.appendChild(d);
+  }
+}
+function renderStop(m,v){
+  var h=el('h2');h.appendChild(el('span','badge '+v.tier,v.tier==='must'?'must-read':'skim'));h.appendChild(document.createTextNode(v.title));m.appendChild(h);
+  var nf=(v.files||[]).length;
+  m.appendChild(el('div','sub','Stop '+cur+' of '+stops.length+' \u00b7 '+nf+(nf===1?' file':' files')));
+  if(v.why){var w=paras(v.why);w.className+=' lead';m.appendChild(w);}
+  if(v.lookFor){var c=el('div','callout');c.appendChild(el('b',null,'What to look for'));c.appendChild(textOrList(v.lookFor));m.appendChild(c);}
+  var fs=findingsFor(v.id);
+  if(fs.length){m.appendChild(section('Findings on this stop',fs.length));fs.forEach(function(f){var c=findingCard(f);m.appendChild(c);});}
+  (v.files||[]).forEach(function(f){m.appendChild(renderFile(f));});
+  var mk=el('div','marks');mk.appendChild(el('span',null,'Your call:'));
+  ['ok','concern','question'].forEach(function(k){
+    var b=el('button',marks[v.id]===k?'on':'',MARK[k]+' '+k);
+    b.onclick=function(){if(marks[v.id]===k)delete marks[v.id];else marks[v.id]=k;save();render();};mk.appendChild(b);
+  });
+  m.appendChild(mk);
+  if(v.unverified){var d=el('details','more');d.appendChild(el('summary',null,'Not verified by the AI'));d.appendChild(textOrList(v.unverified));m.appendChild(d);}
+  if(v.visual){var vc=el('div','callout dashed');vc.appendChild(el('b',null,'A visual the AI can make'));vc.appendChild(textOrList(v.visual));m.appendChild(vc);}
+  m.appendChild(el('div','sub','Marks are saved in this browser only. Tell the AI about concerns in the terminal so it can draft them.'));
+}
 function render(){
   var m=document.getElementById('main');m.textContent='';
-  var v=views[cur];
-  if(cur===0){
-    m.appendChild(el('h2',null,DATA.title||'Review'));
-    m.appendChild(el('div','sub','AI reading of the PR, not verified fact. '+stops.length+' stops, in the order that makes the PR easiest to follow.'));
-    (DATA.overview||[]).forEach(function(o){m.appendChild(box(o.title,o.body,'overview'));});
-    if(DATA.skipped&&DATA.skipped.length){
-      var sk=box('Approved to skip',DATA.skipped.map(function(s){return '• '+s;}).join('\n'));sk.style.whiteSpace='pre-wrap';m.appendChild(sk);
-    }
-  }else{
-    var h=el('h2');h.appendChild(el('span','badge '+v.tier,v.tier==='must'?'must-read':'skim'));h.appendChild(document.createTextNode(v.title));m.appendChild(h);
-    m.appendChild(el('div','sub','Stop '+cur+' of '+stops.length));
-    if(v.why)m.appendChild(box('What changed and why',v.why));
-    if(v.lookFor)m.appendChild(box('What to look for',v.lookFor));
-    if(v.unverified)m.appendChild(box('Not verified',v.unverified));
-    if(v.visual)m.appendChild(box('Visual the AI can make',v.visual,'visual'));
-    (v.files||[]).forEach(function(f){m.appendChild(renderFile(f));});
-    var mk=el('div','marks');mk.appendChild(el('span',null,'Your call:'));
-    ['ok','concern','question'].forEach(function(k){
-      var b=el('button',marks[v.id]===k?'on':'',MARK[k]+' '+k);
-      b.onclick=function(){marks[v.id]=(marks[v.id]===k?undefined:k);if(!marks[v.id])delete marks[v.id];save();render();};mk.appendChild(b);
-    });
-    m.appendChild(mk);
-    m.appendChild(el('div','sub','Marks are saved in this browser only. Tell the AI about concerns in the terminal so it can draft them.'));
-  }
+  if(cur===0)renderOverview(m);else renderStop(m,views[cur]);
   var pg=el('div','pager'),prev=el('button',null,'← Previous'),next=el('button',null,'Next →');
   prev.disabled=cur===0;next.disabled=cur===views.length-1;
   prev.onclick=function(){go(cur-1);};next.onclick=function(){go(cur+1);};

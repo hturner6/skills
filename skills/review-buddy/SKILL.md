@@ -60,12 +60,22 @@ The viewer is the main review surface: one self-contained HTML page with an over
 must-read and skim stops in flow order, each with its scoped diff, your notes on specific lines,
 and unified or side-by-side views. The reviewer marks each stop ok, concern, or question.
 
-Write a `stops.json` (format at the top of `scripts/build-viewer.sh`) with:
-- **overview**: what the PR does and where to look, plus the skip groups the reviewer approved.
+Write a `stops.json` (format at the top of `scripts/build-viewer.sh`). The page is for skimming,
+so keep every text field short: one to three sentences, or an array of short items. No walls of
+prose, and never put a numbered list inside a string (use an array).
+- **summary**: what the PR does, in one or two sentences.
+- **findings**: problems you found, most important first, each with a short title, one or two
+  sentences of evidence, a severity (`high`, `med`, `low`), and the stop it belongs to. Say how
+  you know (read it, or ran it). Findings are the most valuable part, so they go on the overview
+  rather than buried in a paragraph.
+- **lookAt**: three to five stops to read first.
+- **ci**: what CI proves and what was tested. **skipped**: the groups the reviewer approved to
+  skip, or leave it out when there are none.
 - **stops**, in the order that makes the PR easiest to understand: a flow or feature at a time,
-  foundations before what builds on them. Never file order. Each has `why`, `lookFor`,
-  `unverified`, a concrete `visual` suggestion, and the files with the **line range** to show
-  (just the code to review, never a whole file) and any line `notes`.
+  foundations before what builds on them. Never file order. Each has a one-sentence `why`,
+  `lookFor` as a short list of the judgment calls that are the human's, `unverified`, a concrete
+  `visual` suggestion, and the files with the **line range** to show (just the code to review,
+  never a whole file) and any line `notes`.
 
 Run `scripts/build-viewer.sh <worktree> stops.json` and open the printed `review.html` in the
 browser (`xdg-open`, `open`, or `start`). Tell the user it is ready and how many stops there are.
