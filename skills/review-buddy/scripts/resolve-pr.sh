@@ -4,7 +4,7 @@
 # Exit 0: one PR, JSON on stdout. Exit 2: several title matches, a table on stdout. Exit 1: error.
 set -euo pipefail
 
-query="$*"
+query="${*#\#}"
 [[ -n "$query" ]] || { echo "usage: resolve-pr.sh <number|url|title>" >&2; exit 1; }
 fields="number,title,url,body,author,baseRefName,headRefName,headRefOid,state,isDraft,additions,deletions,changedFiles,closingIssuesReferences,statusCheckRollup"
 

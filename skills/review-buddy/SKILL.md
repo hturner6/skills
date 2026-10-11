@@ -67,7 +67,12 @@ foundations before what builds on them. Never file order. At each stop:
 1. Say what changed and why, in a few lines.
 2. Say what to look for: the specific judgment call that is the human's.
 3. Say what you could not verify.
-4. Jump the editor to the first relevant spot: `scripts/open-editor.sh <worktree>/<path>:<line>`.
+4. Show **only the code to review, as a diff**, never the whole file. Print the changed lines with
+   `scripts/show-diff.sh <worktree> <path> <start>-<end>` (lines on the PR side) and paste that
+   snippet into your message. Then open the same snippet in the editor's diff view with
+   `scripts/show-diff.sh <worktree> <path> <start>-<end> --open snippet`. If the reviewer needs to
+   navigate, find references, or see surrounding code, offer `--open file` (the whole file,
+   before vs after) or `scripts/open-editor.sh <worktree>/<path>:<line>` as a follow-up, not the default.
 5. Offer **one concrete visual**, naming exactly what you would draw, for example "I can make a
    flow diagram of how a login request passes through the new auth middleware". Never just say
    "I can make an HTML". Offer it every stop, and build it only if asked.
@@ -97,7 +102,12 @@ worktree, so the editor does not see it), then open it in the browser with `xdg-
 `start`. No build step. If a library is truly needed, load one pinned version from a CDN. Keep it
 plain and quick to read.
 
-Every claim in a visual or explanation links to a `path:line` in the worktree and is labelled as
+Show code in a visual as a diff snippet, not a link to a file. Embed
+`scripts/show-diff.sh <worktree> <path> <start>-<end> --html` (it prints a `<pre class="diff">`
+with `add`, `del`, `hunk`, `ctx` spans to colour). A `path:line` link may sit beside it, but it
+must never be the only way to see the code.
+
+Every claim in a visual or explanation points at a `path:line` in the worktree and is labelled as
 your reading of the code. Mark anything you inferred rather than read as an inference. A visual
 the reviewer cannot trace back to the code is a risk, not a help.
 
