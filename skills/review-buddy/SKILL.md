@@ -1,6 +1,8 @@
 ---
 name: review-buddy
-description: Help a human review a GitHub pull request quickly, especially large AI-authored ones. Finds the parts that need human eyes, walks through the PR by flow, explains and diagrams it, and drafts comments into a pending review. Use when the user asks for a review buddy, help reviewing a PR, or to walk through a PR together.
+description: Help a human review a GitHub pull request quickly, especially large AI-authored ones. Finds the parts that need human eyes, walks through the PR by flow, explains and diagrams it, and drafts comments into a pending review. Run it with /review-buddy <PR number, URL, or title>.
+disable-model-invocation: true
+argument-hint: <PR number, URL, or title>
 ---
 
 # Review Buddy
@@ -13,6 +15,8 @@ Be fast and lightweight. The point is a quicker review, so keep explanations sho
 human steer. Scripts live in `scripts/` next to this file. They need only `gh`, `git`, and `jq`.
 
 ## 1. Resolve the PR
+
+The PR is the argument the user gave. If they gave none, ask which PR.
 
 Run `scripts/resolve-pr.sh <number | url | title>`. Exit 2 means several titles matched: show the
 list and ask which one. Never guess. Note the description, linked issues, and any plan or spec the
