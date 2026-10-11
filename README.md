@@ -40,3 +40,7 @@ Validate before committing: `claude plugin validate .` and `claude plugin valida
 ```
 
 Symlinks `skills/*` into `~/.claude/skills`, so edits take effect immediately. To add one: `cp -r template skills/my-skill`, edit `SKILL.md`, re-run `./install.sh`.
+
+### review-buddy
+
+`skills/review-buddy` helps a human review a GitHub PR: triage what needs human eyes, walk through by flow, explain with throwaway HTML visuals, and draft comments into a pending review. Needs `gh`, `git`, `jq`. Set `REVIEW_BUDDY_EDITOR` (`code`, `cursor`, `zed`, `none`) to choose the editor. A repo can override the default criteria with `.review-buddy.md`.
