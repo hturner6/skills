@@ -1,6 +1,6 @@
 ---
 name: review-buddy
-description: Review a GitHub pull request with a human, especially a large AI-authored one. Triages what needs human eyes, walks the PR flow by flow with a viewer, explains and diagrams, and drafts comments into a pending review. Run with /review-buddy <PR number, URL, or title>.
+description: Review a GitHub pull request with a human, especially a large AI-authored one. Triages what needs human eyes, walks the PR flow by flow with a viewer, explains and diagrams, and drafts comments into a pending review. Run with /hturner6:review-buddy <PR number, URL, or title>.
 disable-model-invocation: true
 argument-hint: <PR number, URL, or title>
 ---

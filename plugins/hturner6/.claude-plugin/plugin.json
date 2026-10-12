@@ -1,0 +1,8 @@
+{
+  "name": "hturner6",
+  "version": "0.2.0",
+  "author": {
+    "name": "Harrison Turner"
+  },
+  "description": "Harrison's skills for Claude Code. Currently: review-buddy, a human-driven GitHub PR review."
+}
