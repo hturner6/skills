@@ -12,9 +12,9 @@
       "description": "List and reply to GitHub PR comments from inside Claude Code, via the gh CLI"
     },
     {
-      "name": "hturner6",
-      "source": "./plugins/hturner6",
-      "description": "Harrison's skills. Currently: review-buddy, a human-driven PR review (triage, HTML viewer, pending-review comments)"
+      "name": "review-buddy",
+      "source": "./plugins/review-buddy",
+      "description": "PR helper skills. Currently: pr-review, a human-driven PR review (triage, HTML viewer, pending-review comments)"
     }
   ]
 }
