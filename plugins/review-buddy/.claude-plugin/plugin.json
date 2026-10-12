@@ -1,0 +1,8 @@
+{
+  "name": "review-buddy",
+  "version": "0.1.0",
+  "author": {
+    "name": "Harrison Turner"
+  },
+  "description": "Review a GitHub PR with a human: triage what needs eyes, walk it flow by flow in an HTML viewer, and draft comments into a pending review. Run with /review-buddy."
+}
