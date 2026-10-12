@@ -10,6 +10,11 @@
       "name": "pr-reply",
       "source": "./plugins/pr-reply",
       "description": "List and reply to GitHub PR comments from inside Claude Code, via the gh CLI"
+    },
+    {
+      "name": "review-buddy",
+      "source": "./plugins/review-buddy",
+      "description": "Human-driven PR review: triage, flow-ordered HTML viewer, and draft comments in a pending review"
     }
   ]
 }
