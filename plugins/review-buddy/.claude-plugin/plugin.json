@@ -1,0 +1,8 @@
+{
+  "name": "review-buddy",
+  "version": "0.3.0",
+  "author": {
+    "name": "Harrison Turner"
+  },
+  "description": "PR helper skills for Claude Code. Currently: pr-review, a human-driven GitHub PR review. Run with /review-buddy:pr-review."
+}
