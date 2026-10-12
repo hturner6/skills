@@ -4,13 +4,8 @@
     "name": "Harrison Turner",
     "email": "harrison-turner@hotmail.com"
   },
-  "description": "Harrison's custom Claude Code plugins",
+  "description": "Claude Code plugins and skills for reviewing GitHub PRs",
   "plugins": [
-    {
-      "name": "example-plugin",
-      "source": "./plugins/example-plugin",
-      "description": "Placeholder plugin showing the expected layout"
-    },
     {
       "name": "pr-reply",
       "source": "./plugins/pr-reply",

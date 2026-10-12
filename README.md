@@ -1,46 +1,38 @@
 # Claude Skills & Plugins
 
-My custom Claude Code skills and plugins. This repo is both a plugin marketplace and a home for loose personal skills.
+Claude Code tooling for working through GitHub pull requests.
+
+- **pr-reply** (plugin): browse and reply to PR comment threads from a terminal pane.
+- **review-buddy** (skill): helps a human review a PR.
 
 ## Layout
 
 ```
-.claude-plugin/marketplace.json   marketplace manifest (lists plugins)
-plugins/<name>/
-  .claude-plugin/plugin.json      plugin manifest
-  skills/<skill>/SKILL.md         plus commands/, agents/, hooks/, .mcp.json as needed
-skills/<name>/SKILL.md            loose personal skills (symlinked by install.sh)
-template/SKILL.md                 starting point for a new skill
+.claude-plugin/marketplace.json   marketplace manifest
+plugins/pr-reply/                 the pr-reply plugin
+skills/review-buddy/              the review-buddy skill
+install.sh                        symlinks skills/* into ~/.claude/skills
 ```
 
-## Plugins
+## pr-reply
 
 ```sh
-# local checkout
-claude plugin marketplace add /home/hturner/Documents/Projects/skills
-claude plugin install example-plugin@hturner-skills
-
-# once pushed to GitHub
-/plugin install example-plugin --marketplace hturner6/skills
-/plugin install pr-reply --marketplace hturner6/skills   # PR comments pane: /pr-comments
+/plugin marketplace add hturner6/skills
+/plugin install pr-reply@hturner-skills
 ```
 
-Validate before committing: `claude plugin validate .` and `claude plugin validate plugins/<name>`.
+Then run `/pr-comments`. Needs the `gh` CLI.
 
-### Adding a plugin
-
-1. Copy `plugins/example-plugin` to `plugins/my-plugin` and edit its `plugin.json`.
-2. Add an entry to `.claude-plugin/marketplace.json` with `"source": "./plugins/my-plugin"`.
-3. Validate, then `/reload-plugins`.
-
-## Loose skills
+## review-buddy
 
 ```sh
-./install.sh
+git clone https://github.com/hturner6/skills && cd skills && ./install.sh
 ```
 
-Symlinks `skills/*` into `~/.claude/skills`, so edits take effect immediately. To add one: `cp -r template skills/my-skill`, edit `SKILL.md`, re-run `./install.sh`.
+`install.sh` symlinks `skills/review-buddy` into `~/.claude/skills`, so edits to the checkout take effect immediately.
 
-### review-buddy
+review-buddy triages what needs human eyes in a PR, walks through it by flow, explains with throwaway HTML visuals, and drafts comments into a pending review. Needs `gh`, `git`, `jq`. Set `REVIEW_BUDDY_EDITOR` (`code`, `cursor`, `zed`, `none`) to choose the editor. A repo can override the default criteria with `.review-buddy.md`.
 
-`skills/review-buddy` helps a human review a GitHub PR: triage what needs human eyes, walk through by flow, explain with throwaway HTML visuals, and draft comments into a pending review. Needs `gh`, `git`, `jq`. Set `REVIEW_BUDDY_EDITOR` (`code`, `cursor`, `zed`, `none`) to choose the editor. A repo can override the default criteria with `.review-buddy.md`.
+## Development
+
+Validate before committing: `claude plugin validate .` and `claude plugin validate plugins/pr-reply`.
