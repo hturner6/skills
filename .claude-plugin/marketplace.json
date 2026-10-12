@@ -14,7 +14,7 @@
     {
       "name": "review-buddy",
       "source": "./plugins/review-buddy",
-      "description": "Human-driven PR review: triage, flow-ordered HTML viewer, and draft comments in a pending review"
+      "description": "PR helper skills. Currently: pr-review, a human-driven PR review (triage, HTML viewer, pending-review comments)"
     }
   ]
 }
